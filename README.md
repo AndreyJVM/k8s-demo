@@ -7,7 +7,8 @@
 #### [Официальная документация Kubernetes](https://kubernetes.io/ru/docs/tasks/tools/install-kubectl/)
 
 ```shell
-    curl -LO https://dl.k8s.io/release/`curl -LS https://dl.k8s.io/release/stable.txt`/bin/linux/amd64/kubectl
+    curl -LO https://dl.k8s.io/release/`curl \
+    -LS https://dl.k8s.io/release/stable.txt`/bin/linux/amd64/kubectl
 ```
 
 ```shell

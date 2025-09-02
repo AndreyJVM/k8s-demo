@@ -1,0 +1,47 @@
+---  # разделения между двумя YAML-документами.
+apiVersion: v1
+kind: Service
+metadata:
+  name: bomberman
+  labels: # метки, с помощью которых можно идентифицировать и выбирать определённые ресурсы.
+    app: bomberman
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000 # порт, на котором служба будет слушать внешние запросы.
+    protocol: TCP
+    targetPort: 8000 # целевой порт, на который будут перенаправлены запросы, определённые в этой службе.
+  selector:
+    app: bomberman # определяет контроллеры или метки пода, которым служба будет направлять запросы.
+
+
+--- # разделения между двумя YAML-документами.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bomberman-deployment
+  labels:
+    app: bomberman
+spec:
+  replicas: 1
+  selector:
+    matchLabels:  # задаёт метки, по которым будет выбраны поды
+      app: bomberman
+  template: # определяет шаблон для создания подов
+    metadata:
+      labels:
+        app: bomberman
+    spec:
+      containers:
+        - name: bomberman
+          image: "andreyvorobevaqa/mycool:bomberman"
+          imagePullPolicy: Always # всегда загружать образ
+          resources:
+            limits: # максимальное количество ресурсов (память и процессор) для контейнера.
+              memory: 400Mi
+              cpu: 1
+            requests: # минимальное количество ресурсов (память и процессор), которое контейнер должен иметь доступное для запуска.
+              memory: 100Mi
+              cpu: 100m
+          ports: # определяет порты, которые контейнер будет экспонировать.
+            - containerPort: 8000
